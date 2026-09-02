@@ -1,0 +1,92 @@
+variable_name,purpose,type,size_bytes,description,heap_influence,heap_notes
+bottles,SYSTEM,Bottle[3],24,Bottle capacity and remaining values,none,No direct heap allocation
+pumpConfig,SYSTEM,PumpConfig[3],12,Per-pump flow calibration values,none,No direct heap allocation
+deviceName,SYSTEM,char[32],32,Device hostname and identity label,none,No direct heap allocation
+mqttBroker,MQTT,char[40],40,MQTT broker host or IP,none,No direct heap allocation
+mqttPort,MQTT,uint16_t,2,MQTT broker TCP port,none,No direct heap allocation
+mqttClientId,MQTT,char[32],32,MQTT client identifier text,none,No direct heap allocation
+mqttUser,MQTT,char[24],24,MQTT authentication username,none,No direct heap allocation
+mqttPass,MQTT,char[32],32,MQTT authentication password,none,No direct heap allocation
+timeZoneSpec,TIME,char[64],64,POSIX timezone specification string,none,No direct heap allocation
+otaUser,OTA,char[24],24,OTA web authentication user,none,No direct heap allocation
+otaPass,OTA,char[24],24,OTA web authentication password,none,No direct heap allocation
+networkUseDhcp,NETWORK,bool,1,DHCP mode enabled flag,none,No direct heap allocation
+networkIp,NETWORK,char[16],16,Static IPv4 address text,none,No direct heap allocation
+networkGateway,NETWORK,char[16],16,Static gateway IPv4 text,none,No direct heap allocation
+networkNetmask,NETWORK,char[16],16,Static netmask IPv4 text,none,No direct heap allocation
+networkDns,NETWORK,char[16],16,Static DNS IPv4 text,none,No direct heap allocation
+lastMQTTAttempt,MQTT,unsigned long,4,Last MQTT reconnect attempt millis,none,No direct heap allocation
+MQTT_TOPIC_AVAIL,MQTT,const char*,4,Availability topic pointer,none,No direct heap allocation
+MQTT_TOPIC_HEALTH,MQTT,const char*,4,Health topic pointer,none,No direct heap allocation
+MQTT_TOPIC_HEARTBEAT,MQTT,const char*,4,Heartbeat topic pointer,none,No direct heap allocation
+MQTT_TOPIC_AUTO_STATE,MQTT,const char*,4,Auto state topic pointer,none,No direct heap allocation
+MQTT_TOPIC_CMD,MQTT,const char*,4,Legacy command topic pointer,none,No direct heap allocation
+MQTT_TOPIC_HA_CMD,MQTT,const char*,4,Home Assistant command topic pointer,none,No direct heap allocation
+MQTT_TOPIC_HA_STATUS,MQTT,const char*,4,Home Assistant status topic pointer,none,No direct heap allocation
+MQTT_TOPIC_CMD_ACK,MQTT,const char*,4,Command ack topic pointer,none,No direct heap allocation
+MQTT_TOPIC_SYSTEM_STATE,MQTT,const char*,4,System state topic pointer,none,No direct heap allocation
+MQTT_TOPIC_BOTTLE_STATE_FMT,MQTT,const char*,4,Bottle state format topic pointer,none,No direct heap allocation
+MQTT_TOPIC_PUMP_DOSE_ML_FMT,MQTT,const char*,4,Pump dose format topic pointer,none,No direct heap allocation
+MQTT_TOPIC_BOTTLE_PERMISSION_FMT,MQTT,const char*,4,Bottle permission format topic pointer,none,No direct heap allocation
+MQTT_TOPIC_PUMP_PERMISSION_FMT,MQTT,const char*,4,Pump permission format topic pointer,none,No direct heap allocation
+MQTT_TOPIC_SCHEDULLER_TOTAL_ML,MQTT,const char*,4,Scheduler total topic pointer,none,No direct heap allocation
+MQTT_TOPIC_SCHEDULLER_PART_A_PCT,MQTT,const char*,4,Scheduler part A topic pointer,none,No direct heap allocation
+MQTT_TOPIC_SCHEDULLER_PART_B_PCT,MQTT,const char*,4,Scheduler part B topic pointer,none,No direct heap allocation
+NTP_SERVER_PRIMARY,TIME,const char*,4,Primary NTP server pointer,none,No direct heap allocation
+NTP_SERVER_SECONDARY,TIME,const char*,4,Secondary NTP server pointer,none,No direct heap allocation
+PUMP_RUN_LOG_CSV_PATH,WEB UI,const char*,4,CSV log file path pointer,none,No direct heap allocation
+pump1,PUMP,PumpState,12,Pump 1 runtime state,none,No direct heap allocation
+pump2,PUMP,PumpState,12,Pump 2 runtime state,none,No direct heap allocation
+calibrationAwaitResult,CALIBRATION,bool[3],3,Calibration pending flags,none,No direct heap allocation
+haDoseMl,HA/MQTT,float[3],12,Last HA dose values,none,No direct heap allocation
+schedullerTotalMl,SCHEDULLER,float,4,Daily scheduler total ml,none,No direct heap allocation
+schedullerPartAPct,SCHEDULLER,float,4,Scheduler part A ratio,none,No direct heap allocation
+schedullerPartBPct,SCHEDULLER,float,4,Scheduler part B ratio,none,No direct heap allocation
+schedullerHour1,SCHEDULLER,int,4,Scheduler slot 1 hour,none,No direct heap allocation
+schedullerHour2,SCHEDULLER,int,4,Scheduler slot 2 hour,none,No direct heap allocation
+schedullerHour3,SCHEDULLER,int,4,Scheduler slot 3 hour,none,No direct heap allocation
+schedullerLastRunYear,SCHEDULLER,int[4][3],48,Per slot-pump last run year,none,No direct heap allocation
+schedullerLastRunYDay,SCHEDULLER,int[4][3],48,Per slot-pump last run yday,none,No direct heap allocation
+schedullerLastAttemptEpoch,SCHEDULLER,time_t[4],32,Per-slot last attempt timestamp,none,No direct heap allocation
+schedullerPump2Sequence,SCHEDULLER,SchedullerPump2Sequence,24,Queued Pump2 sequence state,none,No direct heap allocation
+wm,SYSTEM/WEB UI,WiFiManager,564,WiFiManager global object state,high,WiFiManager portal and params allocate heap at runtime
+server,WEB UI,ESP8266WebServer,272,HTTP server instance object,medium,HTTP request handling uses dynamic String buffers
+espClient,MQTT,WiFiClient,32,TCP client transport object,low,TCP socket/session buffers allocated by network stack
+mqttClient,MQTT,PubSubClient,76,MQTT protocol client object,high,PubSubClient mallocs MQTT packet buffer (1024 bytes config)
+lastTelemetryTick,SYSTEM/MQTT,unsigned long,4,Last health-heartbeat tick millis,none,No direct heap allocation
+lastAutoPublish,SYSTEM,unsigned long,4,Last auto publish millis,none,No direct heap allocation
+lastAutoStatePublishedAt,SYSTEM,unsigned long,4,Last auto-state sent millis,none,No direct heap allocation
+autoStateDueAt,SYSTEM,unsigned long,4,Deferred auto-state due millis,none,No direct heap allocation
+haDiscoveryDueAt,MQTT/HA,unsigned long,4,Deferred discovery due millis,none,No direct heap allocation
+configSaveDueAt,SYSTEM,unsigned long,4,Deferred config save due millis,none,No direct heap allocation
+nextTimeSyncAt,TIME,unsigned long,4,Next NTP sync due millis,none,No direct heap allocation
+timeSyncHadValidTime,TIME,bool,1,Time validity transition flag,none,No direct heap allocation
+minFreeHeap,SYSTEM,uint32_t,4,Minimum observed free heap,none,No direct heap allocation
+mqttReconnectCount,MQTT,uint32_t,4,MQTT reconnect counter,none,No direct heap allocation
+haDiscoveryRepublishPending,MQTT/HA,bool,1,Discovery republish pending flag,none,No direct heap allocation
+autoStatePublishPending,MQTT,bool,1,Auto-state publish pending flag,none,No direct heap allocation
+haDiscoveryPublishPending,MQTT/HA,bool,1,Discovery publish pending flag,none,No direct heap allocation
+configSavePending,SYSTEM,bool,1,Config save pending flag,none,No direct heap allocation
+haDiscoveryStep,MQTT/HA,uint8_t,1,Staged discovery step index,none,No direct heap allocation
+bottleStatePublishMask,MQTT,uint8_t,1,Pending bottle publish bitmask,none,No direct heap allocation
+pumpDoseMlPublishMask,MQTT,uint8_t,1,Pending dose publish bitmask,none,No direct heap allocation
+schedullerStatePublishMask,MQTT,uint8_t,1,Pending scheduler publish bitmask,none,No direct heap allocation
+mqttInterval,MQTT,const unsigned long (folded),0,MQTT reconnect retry interval,none,No direct heap allocation
+MQTT_DANGEROUS_CMD_GUARD_MS,SYSTEM,const unsigned long (folded),0,Dangerous command boot guard,none,No direct heap allocation
+autoPublishInterval,MQTT,const unsigned long (folded),0,Periodic auto state interval,none,No direct heap allocation
+TIME_SYNC_INTERVAL_MS,TIME,const unsigned long (folded),0,Periodic time sync interval,none,No direct heap allocation
+TIME_SYNC_RETRY_MS,TIME,const unsigned long (folded),0,Time sync retry interval,none,No direct heap allocation
+TIME_VALID_AFTER_EPOCH,TIME,const time_t (folded),0,Minimum valid system epoch,none,No direct heap allocation
+PUMP_RUN_LOG_MAX_BYTES,WEB UI,const size_t (folded),0,CSV max bytes before rotation,none,No direct heap allocation
+PUMP1_PIN,PUMP,const uint8_t (folded),0,Pump 1 GPIO pin,none,No direct heap allocation
+PUMP2_PIN,PUMP,const uint8_t (folded),0,Pump 2 GPIO pin,none,No direct heap allocation
+FACTORY_RESET_PIN,SYSTEM,const uint8_t (folded),0,Factory reset GPIO pin,none,No direct heap allocation
+PUMP_ACTIVE_HIGH,PUMP,const bool (folded),0,Pump output active level,none,No direct heap allocation
+PUMP_HARD_MAX_MS,PUMP,const unsigned long (folded),0,Pump safety maximum runtime,none,No direct heap allocation
+CAL_RUN_DURATION_MS,CALIBRATION,const unsigned long (folded),0,Calibration fixed run duration,none,No direct heap allocation
+FACTORY_RESET_HOLD_MS,SYSTEM,const unsigned long (folded),0,Factory jumper hold duration,none,No direct heap allocation
+CAL_MIN_FLOW_ML_PER_SEC,CALIBRATION,const float (folded),0,Calibration minimum accepted flow,none,No direct heap allocation
+CAL_MAX_FLOW_ML_PER_SEC,CALIBRATION,const float (folded),0,Calibration maximum accepted flow,none,No direct heap allocation
+SCHEDULLER_PUMP_SWITCH_GAP_MS,SCHEDULLER,const unsigned long (folded),0,Pump1 to Pump2 gap,none,No direct heap allocation
+telemetryInterval,SYSTEM/MQTT,const unsigned long (folded),0,Health and heartbeat interval,none,No direct heap allocation
+autoStateMinIntervalMs,MQTT,const unsigned long (folded),0,Auto state minimum spacing,none,No direct heap allocation

@@ -1,0 +1,76 @@
+title: hydrodozerpump_example
+views:
+  - title: Control
+    path: hydrodozerpump_example
+    icon: mdi:pump
+    cards:
+      - type: markdown
+        content: |-
+          ## hydrodozerpump_example
+          Control and monitoring
+          http://hydrodozerpump-example.local
+      - type: grid
+        columns: 3
+        square: false
+        cards:
+          - show_name: true
+            show_icon: true
+            type: button
+            entity: button.hydrodozerpump_example_pump_a_dose_now
+            name: Dose Pump A
+            icon: mdi:pump
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.hydrodozerpump_example_pump_a_dose_now
+          - show_name: true
+            show_icon: true
+            type: button
+            entity: button.hydrodozerpump_example_pump_b_dose_now
+            name: Dose Pump B
+            icon: mdi:pump
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.hydrodozerpump_example_pump_b_dose_now
+          - show_name: true
+            show_icon: true
+            type: button
+            entity: button.hydrodozerpump_example_stop_all_pumps
+            name: Stop All
+            icon: mdi:pump-off
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.hydrodozerpump_example_stop_all_pumps
+      - type: entities
+        title: Scheduler
+        show_header_toggle: false
+        entities:
+          - entity: number.hydrodozerpump_example_scheduller_total_ml
+            name: Total mL/day
+          - entity: number.hydrodozerpump_example_scheduller_part_a
+            name: Part A %
+          - entity: number.hydrodozerpump_example_scheduller_part_b
+            name: Part B %
+          - entity: number.hydrodozerpump_example_scheduller_hour_1
+            name: Slot 1 hour
+          - entity: number.hydrodozerpump_example_scheduller_hour_2
+            name: Slot 2 hour
+          - entity: number.hydrodozerpump_example_scheduller_hour_3
+            name: Slot 3 hour
+      - type: entities
+        title: Doses
+        show_header_toggle: false
+        entities:
+          - entity: number.hydrodozerpump_example_pump_a_dose_ml
+            name: Pump A dose mL
+          - entity: number.hydrodozerpump_example_pump_b_dose_ml
+            name: Pump B dose mL
+      - type: entities
+        title: Diagnostics
+        show_header_toggle: false
+        entities:

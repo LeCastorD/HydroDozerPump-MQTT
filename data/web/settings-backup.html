@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>Backup &amp; Restore</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <div class="main">
+    <h3>&#127811; Backup &amp; Restore &#127811;</h3>
+    <div class="row"><a class="btn" href="/settings">Back</a></div>
+    <div class="msg" id="msg" style="display:none;"></div>
+
+    <fieldset>
+      <b>Backup</b><br><br>
+      <div class="row"><a class="btn" href="/settings/backup_restore/download_config">Download config.json</a></div>
+      <small id="config_meta">config.json: checking...</small><br><br>
+      <div class="row"><a class="btn" href="/settings/backup_restore/download_pump_log">Download pump_runs.csv</a></div>
+      <small id="pump_log_meta">pump_runs.csv: checking...</small>
+    </fieldset>
+
+    <fieldset>
+      <b>Restore config.json</b><br>
+      <small>Upload a valid backup of config.json. Reboot is recommended after restore.</small><br><br>
+      <form method="POST" action="/settings/backup_restore/upload_config" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".json,application/json" required><br><br>
+        <button type="submit">Restore config.json</button>
+      </form>
+    </fieldset>
+
+    <fieldset>
+      <b>Restore pump_runs.csv</b><br>
+      <small>CSV must keep the header: Date, Pump ID, Volume in ML, Note</small><br><br>
+      <form method="POST" action="/settings/backup_restore/upload_pump_log" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".csv,text/csv" required><br><br>
+        <button type="submit">Restore pump_runs.csv</button>
+      </form>
+    </fieldset>
+
+    <small>Note: uploading a full LittleFS image replaces all files in LittleFS.</small>
+  </div>
+
+  <script>
+    function formatBytes(bytes) {
+      const n = Number(bytes || 0);
+      if (n < 1024) return n + ' B';
+      return Math.round(n / 1024) + ' KB';
+    }
+
+    fetch('/api/ui/settings/backup_restore', {cache: 'no-store'})
+      .then(r => r.json())
+      .then(d => {
+        const c = document.getElementById('config_meta');
+        const l = document.getElementById('pump_log_meta');
+        c.textContent = d.config_exists ? ('config.json: ' + formatBytes(d.config_size)) : 'config.json: not found';
+        if (d.pump_log_exists) {
+          l.textContent = 'pump_runs.csv: ' + formatBytes(d.pump_log_size) + ' / ' + formatBytes(d.pump_log_max_bytes || 0);
+        } else {
+          l.textContent = 'pump_runs.csv: not found';
+        }
+      })
+      .catch(() => {
+        document.getElementById('config_meta').textContent = 'config.json: unavailable';
+        document.getElementById('pump_log_meta').textContent = 'pump_runs.csv: unavailable';
+      });
+
+    const q = new URLSearchParams(window.location.search);
+    let t = '';
+    if (q.get('config_restored') === '1') t = 'config.json restored.';
+    if (q.get('config_restored') === '0') t = 'config.json restore failed.';
+    if (q.get('pump_log_restored') === '1') t = 'pump_runs.csv restored.';
+    if (q.get('pump_log_restored') === '0') t = 'pump_runs.csv restore failed.';
+    if (q.get('error') === '1' && t) t += ' Check file format and size.';
+    if (t) {
+      const m = document.getElementById('msg');
+      m.style.display = 'block';
+      m.textContent = t;
+    }
+  </script>
+</body>
+</html>

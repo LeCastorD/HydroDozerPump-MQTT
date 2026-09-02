@@ -1,0 +1,10 @@
+.DS_Store
+
+# Local Safari preview generated from README.md.
+readme.html
+
+.pio/
+.pioenvs/
+.piolibdeps/
+
+.vscode/

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>Send MQTT command</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <div class="main">
+    <h3>&#127811; Send MQTT command &#127811;</h3>
+    <div class="row"><a class="btn" href="/">Back</a></div>
+    <p>Select a safe command template, adjust values, then send to MQTT.</p>
+    <form method="POST" action="/mqtt_send_do">
+      <label for="cmd_template"><b>Command template</b></label><br>
+      <select id="cmd_template" name="cmd_template" onchange="applyTemplate()">
+        <option value="sched_total_ml">Daily total mL (scheduler)</option>
+        <option value="sched_part_a_pct">Part A ratio (%)</option>
+        <option value="sched_part_b_pct">Part B ratio (%)</option>
+        <option value="sched_pause">Scheduler pause (0/1)</option>
+        <option value="low_bottle_alarm_pct">Low Bottle Alarm (%)</option>
+        <option value="sched_hour_1" selected>Scheduler hour slot 1</option>
+        <option value="sched_hour_2">Scheduler hour slot 2</option>
+        <option value="sched_hour_3">Scheduler hour slot 3</option>
+        <option value="bottle_1_capacity">Bottle 1 capacity (mL)</option>
+        <option value="bottle_2_capacity">Bottle 2 capacity (mL)</option>
+        <option value="bottle_1_refill">Refill Bottle A</option>
+        <option value="bottle_2_refill">Refill Bottle B</option>
+      </select><br><br>
+      <p id="template_help"><b></b></p>
+      <label for="payload"><b>MQTT payload (JSON)</b></label><br>
+      <textarea id="payload" name="payload"></textarea><br><br>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+  <script>
+    let currentVals = {
+      sched_total_ml: 100,
+      sched_part_a_pct: 50,
+      sched_part_b_pct: 50,
+      sched_pause: 0,
+      low_bottle_alarm_pct: 10,
+      sched_hour_1: 8,
+      sched_hour_2: 14,
+      sched_hour_3: 20,
+      bottle_1_capacity: 1000,
+      bottle_2_capacity: 1000
+    };
+
+    const mqttTemplates = {
+      sched_total_ml: { payload: () => '{"ha":"set_scheduller_total_ml","ml":' + currentVals.sched_total_ml + '}', help: 'Sets the total daily scheduler dose in mL (split across 3 slots).' },
+      sched_part_a_pct: { payload: () => '{"ha":"set_scheduller_part_a_pct","pct":' + currentVals.sched_part_a_pct + '}', help: 'Sets Part A percentage (0..100).' },
+      sched_part_b_pct: { payload: () => '{"ha":"set_scheduller_part_b_pct","pct":' + currentVals.sched_part_b_pct + '}', help: 'Sets Part B percentage (0..100).' },
+      sched_pause: { payload: () => '{"ha":"set_scheduller_pause","value":' + currentVals.sched_pause + '}', help: 'Pauses scheduler when set to 1.' },
+      low_bottle_alarm_pct: { payload: () => '{"ha":"set_low_bottle_alarm_pct","pct":' + currentVals.low_bottle_alarm_pct + '}', help: 'Sets low bottle alarm threshold in percent.' },
+      sched_hour_1: { payload: () => '{"ha":"set_scheduller_hour","slot":1,"hour":' + currentVals.sched_hour_1 + '}', help: 'Sets execution hour for slot 1 (0..23).' },
+      sched_hour_2: { payload: () => '{"ha":"set_scheduller_hour","slot":2,"hour":' + currentVals.sched_hour_2 + '}', help: 'Sets execution hour for slot 2 (0..23).' },
+      sched_hour_3: { payload: () => '{"ha":"set_scheduller_hour","slot":3,"hour":' + currentVals.sched_hour_3 + '}', help: 'Sets execution hour for slot 3 (0..23).' },
+      bottle_1_capacity: { payload: () => '{"ha":"set_capacity","bottle":1,"ml":' + currentVals.bottle_1_capacity + '}', help: 'Sets Bottle 1 capacity in mL.' },
+      bottle_2_capacity: { payload: () => '{"ha":"set_capacity","bottle":2,"ml":' + currentVals.bottle_2_capacity + '}', help: 'Sets Bottle 2 capacity in mL.' },
+      bottle_1_refill: { payload: () => '{"bottle":1,"refill":true}', help: 'Refills Bottle A to full capacity.' },
+      bottle_2_refill: { payload: () => '{"bottle":2,"refill":true}', help: 'Refills Bottle B to full capacity.' }
+    };
+
+    function applyTemplate() {
+      const key = document.getElementById('cmd_template').value;
+      const t = mqttTemplates[key];
+      if (!t) return;
+      document.getElementById('template_help').textContent = t.help;
+      document.getElementById('payload').value = t.payload();
+    }
+
+    fetch('/api/ui/mqtt_defaults', {cache: 'no-store'})
+      .then(r => r.json())
+      .then(d => {
+        currentVals = d || currentVals;
+        applyTemplate();
+      });
+
+    applyTemplate();
+  </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>MQTT Settings</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <div class="main">
+    <h3>&#127811; MQTT Settings &#127811;</h3>
+    <div id="mqtt_status_line" style="font-weight:bold;margin:0 0 8px 0;color:#d43535;">MQTT Status NOT CONNECTED</div>
+    <div class="row"><a class="btn" href="/settings">Back</a></div>
+    <div class="msg" id="msg" style="display:none;"></div>
+    <fieldset>
+      <form method="POST" action="/settings/mqtt_save">
+        Broker IP / Host:<br><input id="mqtt_broker" name="mqtt_broker" maxlength="39"><br><br>
+        Broker port:<br><input id="mqtt_port" name="mqtt_port" type="number" min="1" max="65535"><br><br>
+        Client ID:<br><input id="mqtt_client_id" name="mqtt_client_id" maxlength="31"><br><br>
+        MQTT user:<br><input id="mqtt_user" name="mqtt_user" maxlength="23"><br><br>
+        MQTT pass:<br><input id="mqtt_pass" name="mqtt_pass" type="password" maxlength="31"><br><br>
+        <button type="submit">Save MQTT Settings</button>
+      </form>
+    </fieldset>
+  </div>
+  <script>
+    function renderMqttStatus(d) {
+      const el = document.getElementById('mqtt_status_line');
+      const connected = !!(d && d.connected);
+      const reconnects = Number((d && d.reconnects) || 0);
+      if (connected) {
+        el.style.color = '#7bcf6a';
+        el.textContent = 'MQTT Status CONNECTED (' + reconnects + ')';
+      } else {
+        el.style.color = '#d43535';
+        el.textContent = 'MQTT Status NOT CONNECTED';
+      }
+    }
+
+    fetch('/api/ui/settings/mqtt', {cache: 'no-store'}).then(r => r.json()).then(d => {
+      document.getElementById('mqtt_broker').value = d.broker || '';
+      document.getElementById('mqtt_port').value = d.port || 1883;
+      document.getElementById('mqtt_client_id').value = d.client_id || '';
+      document.getElementById('mqtt_user').value = d.user || '';
+      document.getElementById('mqtt_pass').value = d.pass || '';
+      renderMqttStatus(d);
+    }).catch(() => {
+      renderMqttStatus(null);
+    });
+    const q = new URLSearchParams(window.location.search);
+    let t = '';
+    if (q.get('saved') === '1') t = 'Settings saved.';
+    if (q.get('saved') === '0') t = 'No changes detected.';
+    if (q.get('warning') === '1') t += (t ? ' ' : '') + 'Invalid MQTT port.';
+    if (t) { const m=document.getElementById('msg'); m.style.display='block'; m.textContent=t; }
+  </script>
+</body>
+</html>

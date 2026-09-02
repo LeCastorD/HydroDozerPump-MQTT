@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>Networking</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <div class="main">
+    <h3>&#127811; Networking &#127811;</h3>
+    <div class="row"><a class="btn" href="/settings">Back</a></div>
+    <div class="msg" id="msg" style="display:none;"></div>
+    <fieldset>
+      <form method="POST" action="/settings/network_save">
+        Mode:<br>
+        <select id="network_mode" name="network_mode">
+          <option value="dhcp">Automatic (DHCP)</option>
+          <option value="manual">Manual</option>
+        </select><br><br>
+        Hostname:<br><input id="device_name" name="device_name" maxlength="31"><br><br>
+        Static IP:<br><input id="network_ip" name="network_ip" maxlength="15"><br><br>
+        Gateway:<br><input id="network_gateway" name="network_gateway" maxlength="15"><br><br>
+        Netmask:<br><input id="network_netmask" name="network_netmask" maxlength="15"><br><br>
+        DNS:<br><input id="network_dns" name="network_dns" maxlength="15"><br><br>
+        <button type="submit">Save Networking</button>
+      </form>
+    </fieldset>
+    <div class="row"><a class="btn btn-danger" href="/wifi_manager">Open WiFiManager</a></div>
+  </div>
+  <script>
+    fetch('/api/ui/settings/network', {cache: 'no-store'}).then(r => r.json()).then(d => {
+      document.getElementById('network_mode').value = d.network_mode || 'dhcp';
+      document.getElementById('device_name').value = d.device_name || '';
+      document.getElementById('network_ip').value = d.ip || '';
+      document.getElementById('network_gateway').value = d.gateway || '';
+      document.getElementById('network_netmask').value = d.netmask || '';
+      document.getElementById('network_dns').value = d.dns || '';
+    });
+    const q = new URLSearchParams(window.location.search);
+    let t = '';
+    if (q.get('saved') === '1') t = 'Settings saved.';
+    if (q.get('saved') === '0') t = 'No changes detected.';
+    if (q.get('warning') === '1') t += (t ? ' ' : '') + 'Some values were not applied.';
+    if (q.get('network_changed') === '1') t += (t ? ' ' : '') + 'Network mode/IP changes apply fully after reboot.';
+    if (t) { const m=document.getElementById('msg'); m.style.display='block'; m.textContent=t; }
+  </script>
+</body>
+</html>

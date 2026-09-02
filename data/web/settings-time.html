@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>Time Synchronization</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <div class="main">
+    <h3>&#127811; Time Synchronization &#127811;</h3>
+    <div class="row"><a class="btn" href="/settings">Back</a></div>
+    <div class="msg" id="msg" style="display:none;"></div>
+    <fieldset>
+      <form method="POST" action="/settings/time_save">
+        Time zone (POSIX TZ string):<br>
+        <p><b>Current zone: <span id="current_zone">-</span></b></p>
+        <input id="time_tz" name="time_tz" maxlength="63"><br>
+        <small>Examples: UTC0, EST5EDT,M3.2.0/2,M11.1.0/2</small><br><br>
+        <button type="submit">Apply Time Zone</button>
+      </form>
+      <br>Current timestamp:<br><b id="current_time">-</b>
+    </fieldset>
+  </div>
+  <script>
+    fetch('/api/ui/settings/time', {cache: 'no-store'}).then(r => r.json()).then(d => {
+      document.getElementById('current_zone').textContent = d.time_zone || '';
+      document.getElementById('current_time').textContent = d.current_time || '';
+      document.getElementById('time_tz').value = d.time_zone || '';
+    });
+    const q = new URLSearchParams(window.location.search);
+    let t = '';
+    if (q.get('saved') === '1') t = 'Settings saved.';
+    if (q.get('saved') === '0') t = 'No changes detected.';
+    if (q.get('warning') === '1') t += (t ? ' ' : '') + 'Invalid time zone format.';
+    if (q.get('time_changed') === '1') t += (t ? ' ' : '') + 'Time zone applied and NTP sync requested.';
+    if (t) { const m=document.getElementById('msg'); m.style.display='block'; m.textContent=t; }
+  </script>
+</body>
+</html>

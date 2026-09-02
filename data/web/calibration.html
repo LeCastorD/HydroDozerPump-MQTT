@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>Pump Calibration</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <div class="main">
+    <h3>&#127811; Pump Calibration &#127811;</h3>
+    <div class="row"><a class="btn" href="/">Back</a></div>
+    <div class="msg" id="statusBox" style="display:none;"></div>
+    <p><b>Pump 1:</b> <span id="p1Flow">-</span> mL/s (<span id="p1FlowMin">-</span> mL/min)<br>
+       <b>Pump 2:</b> <span id="p2Flow">-</span> mL/s (<span id="p2FlowMin">-</span> mL/min)</p>
+
+    <fieldset>
+      <form method="POST" action="/calibration/start" class="row">
+        <input type="hidden" name="pump" value="1">
+        <button id="p1Start" type="submit">Calibration Pump A</button>
+      </form>
+      <h3>Pump A</h3>
+      <form method="POST" action="/calibration/submit">
+        <input type="hidden" name="pump" value="1">
+        <input id="p1Measured" type="number" name="measured_ml" min="0.1" step="0.1" placeholder="Measured mL after 60s">
+        <button id="p1Apply" type="submit">Apply</button>
+      </form>
+      <p id="p1Hint" class="muted"></p>
+    </fieldset>
+
+    <fieldset>
+      <form method="POST" action="/calibration/start" class="row">
+        <input type="hidden" name="pump" value="2">
+        <button id="p2Start" type="submit">Calibration Pump B</button>
+      </form>
+      <h3>Pump B</h3>
+      <form method="POST" action="/calibration/submit">
+        <input type="hidden" name="pump" value="2">
+        <input id="p2Measured" type="number" name="measured_ml" min="0.1" step="0.1" placeholder="Measured mL after 60s">
+        <button id="p2Apply" type="submit">Apply</button>
+      </form>
+      <p id="p2Hint" class="muted"></p>
+    </fieldset>
+  </div>
+
+  <script>
+    const status = new URLSearchParams(window.location.search).get('status');
+    if (status) {
+      const box = document.getElementById('statusBox');
+      box.style.display = 'block';
+      box.textContent = 'Status: ' + status;
+    }
+
+    function updateHint(running, canSubmit, hintId) {
+      const hint = document.getElementById(hintId);
+      if (running) hint.textContent = 'Calibration running. Wait for auto-stop before entering measured mL.';
+      else if (canSubmit) hint.textContent = 'Run complete. Enter measured mL then press Apply.';
+      else hint.textContent = 'Start calibration first. Input is disabled until a run is initiated.';
+    }
+
+    function loadState() {
+      fetch('/api/ui/calibration' + window.location.search, {cache: 'no-store'})
+        .then(r => r.json())
+        .then(d => {
+          document.getElementById('p1Flow').textContent = Number(d.pump1_flow_ml_s || 0).toFixed(3);
+          document.getElementById('p2Flow').textContent = Number(d.pump2_flow_ml_s || 0).toFixed(3);
+          document.getElementById('p1FlowMin').textContent = Number(d.pump1_flow_ml_min || 0).toFixed(1);
+          document.getElementById('p2FlowMin').textContent = Number(d.pump2_flow_ml_min || 0).toFixed(1);
+
+          const p1Can = !!d.pump1_can_submit;
+          const p2Can = !!d.pump2_can_submit;
+          const p1Run = !!d.pump1_running;
+          const p2Run = !!d.pump2_running;
+
+          document.getElementById('p1Start').disabled = p1Run || p1Can;
+          document.getElementById('p2Start').disabled = p2Run || p2Can;
+          document.getElementById('p1Measured').disabled = !p1Can;
+          document.getElementById('p2Measured').disabled = !p2Can;
+          document.getElementById('p1Apply').disabled = !p1Can;
+          document.getElementById('p2Apply').disabled = !p2Can;
+          updateHint(p1Run, p1Can, 'p1Hint');
+          updateHint(p2Run, p2Can, 'p2Hint');
+        });
+    }
+
+    loadState();
+    setInterval(loadState, 2000);
+  </script>
+</body>
+</html>

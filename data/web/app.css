@@ -1,0 +1,79 @@
+:root {
+  --bg: #252525;
+  --panel: #3f3f3f;
+  --text: #eaeaea;
+  --muted: #b9b9b9;
+  --ok: #7bcf6a;
+  --ok-hover: #4ea94a;
+  --danger: #d43535;
+  --danger-hover: #931f1f;
+  --border: #565656;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 16px;
+  font-family: Verdana, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  text-align: center;
+}
+.main {
+  width: 340px;
+  max-width: 92vw;
+  margin: 0 auto;
+  text-align: left;
+}
+h3 { text-align: center; margin: 0 0 12px 0; }
+fieldset {
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+}
+button, .btn {
+  width: 100%;
+  display: inline-block;
+  border: 0;
+  border-radius: 6px;
+  text-align: center;
+  text-decoration: none;
+  line-height: 2.4rem;
+  font-size: 1rem;
+  color: #faffff;
+  background: var(--ok);
+  cursor: pointer;
+}
+button:hover, .btn:hover { background: var(--ok-hover); }
+.btn-danger, button.btn-danger { background: var(--danger); }
+.btn-danger:hover, button.btn-danger:hover { background: var(--danger-hover); }
+input:not([type]), input[type=password], input[type=number], select, textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #ddd;
+  color: #000;
+}
+textarea {
+  resize: none;
+  min-height: 140px;
+}
+small, .muted { color: var(--muted); }
+.row { margin: 8px 0; }
+.msg {
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #363636;
+}
+.footer {
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: #9a9a9a;
+  text-align: right;
+  padding-top: 8px;
+}

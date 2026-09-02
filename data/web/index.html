@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>HydroDozerPump</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <div class="main">
+    <h3>&#127811; HydroDozerPump &#127811;</h3>
+    <div class="row"><a class="btn" href="/calibration">Pump Calibration</a></div>
+    <div class="row"><a class="btn" href="/settings">Setup</a></div>
+    <div class="row"><a class="btn" href="/mqtt_send">Send MQTT command</a></div>
+    <div class="row"><a class="btn" href="/pump_runs_view">Pump Log</a></div>
+    <div class="row"><a class="btn" href="/update">Firmware Upgrade</a></div>
+    <div class="row" id="logoutRow" style="display:none;"><a class="btn" href="/logout">Logout</a></div>
+    <div class="row"><a class="btn btn-danger" href="/reboot">Reboot</a></div>
+
+    <div class="footer" id="footer">
+      HydroDozerPump<br>
+      Build: -<br>
+      Available working memory (minimum): - bytes<br>
+      WiFi signal strength: - dBm<br>
+      Uptime: -
+    </div>
+  </div>
+  <script>
+    fetch('/api/ui/home', {cache: 'no-store'})
+      .then(r => r.json())
+      .then(d => {
+        const f = document.getElementById('footer');
+        f.innerHTML =
+          'HydroDozerPump ' + (d.fw_version || '-') + '<br>' +
+          'Build: ' + (d.fw_build_stamp || '-') + '<br>' +
+          'Available working memory (minimum): ' + (d.min_free_heap ?? '-') + ' bytes<br>' +
+          'WiFi signal strength: ' + (d.rssi ?? '-') + ' dBm<br>' +
+          'Uptime: ' + (d.uptime || '-');
+        if (d.web_login_required) document.getElementById('logoutRow').style.display = 'block';
+      });
+  </script>
+</body>
+</html>
