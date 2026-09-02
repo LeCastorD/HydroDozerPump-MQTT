@@ -179,7 +179,7 @@ const char* DEFAULT_MQTT_CLIENT_ID_BASE = "HydroDozerPump";
     const uint8_t STATUS_LED_GREEN_PIN = D6; // GPIO12
     const uint8_t STATUS_LED_RED_PIN = D7;   // GPIO13
     const bool STATUS_LED_ACTIVE_HIGH = true;
-    const unsigned long STATUS_LED_ALT_INTERVAL_MS = 350UL;
+    const unsigned long STATUS_LED_BLINK_INTERVAL_MS = 350UL;
     const unsigned long STATUS_LED_PULSE_PERIOD_MS = 1600UL;
     const uint16_t STATUS_LED_PWM_MAX = 1023U;
     const uint16_t STATUS_LED_PWM_MIN = 160U;
@@ -2110,14 +2110,21 @@ void updateStatusLeds()
 {
     if (schedullerPaused || isAnyBottleEmpty())
     {
-        bool greenOn = ((millis() / STATUS_LED_ALT_INTERVAL_MS) % 2UL) == 0UL;
-        ledApplyDigital(STATUS_LED_GREEN_PIN, greenOn);
-        ledApplyDigital(STATUS_LED_RED_PIN, !greenOn);
+        bool lightsOn = ((millis() / STATUS_LED_BLINK_INTERVAL_MS) % 2UL) == 0UL;
+        ledApplyDigital(STATUS_LED_GREEN_PIN, lightsOn);
+        ledApplyDigital(STATUS_LED_RED_PIN, lightsOn);
         return;
     }
 
     bool anyPumpRunning = pump1.running || pump2.running;
     bool lowBottleAlarm = isAnyBottleLowAlarm();
+
+    if (lowBottleAlarm)
+    {
+        ledApplyDigital(STATUS_LED_GREEN_PIN, true);
+        ledApplyDigital(STATUS_LED_RED_PIN, true);
+        return;
+    }
 
     if (anyPumpRunning)
     {
@@ -2137,7 +2144,7 @@ void updateStatusLeds()
         ledApplyDigital(STATUS_LED_GREEN_PIN, true);
     }
 
-    ledApplyDigital(STATUS_LED_RED_PIN, lowBottleAlarm);
+    ledApplyDigital(STATUS_LED_RED_PIN, false);
 }
 
 void pumpApplyOutput(uint8_t pin, bool on)

@@ -258,9 +258,65 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
 
 <h2 id="web-ui-reference">Web UI reference</h2>
 
-> Additional redacted screenshots for the home page, calibration, network, backup and restore, and pump log pages will be added later.
+> Additional redacted screenshots for network settings, the pump log, and firmware updates will be added later.
 
 <p>The home page provides access to Pump Calibration, Setup, MQTT command sending, Pump Log, Firmware Upgrade, and reboot. The complete route map is maintained in <a href="docs/web-pages-index.md">docs/web-pages-index.md</a>.</p>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/Start_page.jpg" alt="HydroDozerPump Web UI start page" width="70%"><br><em>HydroDozerPump Web UI start page</em></td>
+  </tr>
+</table>
+
+<h3>Pump calibration</h3>
+
+<p>Select <strong>Calibration Pump A</strong> or <strong>Calibration Pump B</strong> to run that pump for 60 seconds. After it stops, measure the dispensed liquid, enter the measured volume in mL, and select <strong>Apply</strong>. This stores the measured flow rate for future manual and scheduled doses.</p>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/Pump_calibraction.jpg" alt="HydroDozerPump pump calibration page" width="70%"><br><em>Pump calibration for Pump A and Pump B</em></td>
+  </tr>
+</table>
+
+<h3>Backup and restore</h3>
+
+<p><strong>Download config.json</strong> saves the device configuration, while <strong>Download pump_runs.csv</strong> saves the dosing log. Restore each file only to the matching restore control. A restored <code>config.json</code> can contain credentials, so keep backups private; reboot after restoring configuration. A restored pump log must preserve its CSV header.</p>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/Backup_restore.jpg" alt="HydroDozerPump backup and restore page" width="70%"><br><em>Configuration and pump-log backup and restore</em></td>
+  </tr>
+</table>
+
+<h3>Send MQTT command</h3>
+
+<p>The sender accepts only the templates shown below and validates the JSON before processing it. Scheduler and capacity templates publish to <code>hydrodozerpump/&lt;node&gt;/ha/cmd</code>; refill templates publish to <code>hydrodozerpump/&lt;node&gt;/cmd</code>. Commands are non-retained. If MQTT is disconnected, a valid command is applied locally and is not published.</p>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/Send_MQTT_command.jpg" alt="HydroDozerPump Send MQTT command page" width="70%"><br><em>Safe MQTT command sender</em></td>
+  </tr>
+</table>
+
+<table>
+  <thead>
+    <tr><th>Template</th><th>Accepted value</th><th>Effect</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Daily total mL</td><td>Positive mL, up to the current safe maximum</td><td>Sets the total liquid scheduled for the day, divided across the three daily slots.</td></tr>
+    <tr><td>Part A ratio</td><td>0-100%</td><td>Sets Pump A's share of the daily total and automatically adjusts Part B to make 100%.</td></tr>
+    <tr><td>Part B ratio</td><td>0-100%</td><td>Sets Pump B's share of the daily total and automatically adjusts Part A to make 100%.</td></tr>
+    <tr><td>Scheduler pause</td><td><code>1</code> pause; <code>0</code> resume</td><td>Stops or resumes scheduled dosing. It does not change the saved schedule.</td></tr>
+    <tr><td>Low Bottle Alarm</td><td>0-100%</td><td>Sets the percentage at or below which the low-bottle alarm and red indicator are activated.</td></tr>
+    <tr><td>Scheduler hour slot 1</td><td>Hour 0-23</td><td>Sets the execution hour for the first daily dose slot.</td></tr>
+    <tr><td>Scheduler hour slot 2</td><td>Hour 0-23</td><td>Sets the execution hour for the second daily dose slot.</td></tr>
+    <tr><td>Scheduler hour slot 3</td><td>Hour 0-23</td><td>Sets the execution hour for the third daily dose slot.</td></tr>
+    <tr><td>Bottle 1 capacity</td><td>More than 0 and up to 10,000 mL</td><td>Sets Bottle A's capacity. Remaining volume is capped at the new capacity when necessary.</td></tr>
+    <tr><td>Bottle 2 capacity</td><td>More than 0 and up to 10,000 mL</td><td>Sets Bottle B's capacity. Remaining volume is capped at the new capacity when necessary.</td></tr>
+    <tr><td>Refill Bottle A</td><td>No value</td><td>Sets Bottle A's remaining volume to its configured capacity.</td></tr>
+    <tr><td>Refill Bottle B</td><td>No value</td><td>Sets Bottle B's remaining volume to its configured capacity.</td></tr>
+  </tbody>
+</table>
 
 <h3>MQTT discovery and Home Assistant</h3>
 

@@ -24,7 +24,7 @@ The firmware currently assumes active-high outputs for the ULN2003 inputs:
 - `HIGH` = pump on
 - `LOW` = pump off
 
-`D6` and `D7` use active-high PWM for the green and red status lights. The firmware turns the green light on at startup, pulses it while a pump runs, and alternates green/red when dosing is paused or a bottle is empty. The red light indicates a low-bottle alarm during normal operation.
+`D6` and `D7` use active-high PWM for the green and red status lights. The green light is solid during normal operation and pulses while a pump runs. Both lights are solid when a bottle reaches the configured low-volume threshold. Both lights blink together when dosing is halted because the scheduler is paused or a bottle is empty.
 
 If the installed pump or light wiring is inverted, change `PUMP_ACTIVE_HIGH` or `STATUS_LED_ACTIVE_HIGH` in `src/HydroDozerPump/main.cpp` as applicable. Test all channels with the pump lines disconnected from the nutrient bottles.
 
