@@ -2,8 +2,8 @@
 #define FW_VERSION_AUTO_H
 
 #define FW_VERSION_BASE "3.0"
-#define FW_BUILD_NUMBER 9
-#define FW_VERSION "3.0.9"
-#define FW_BUILD_STAMP "2026-09-02 15:51:47"
+#define FW_BUILD_NUMBER 8
+#define FW_VERSION "3.0.8"
+#define FW_BUILD_STAMP "2026-09-02 15:09:11"
 
 #endif

@@ -31,6 +31,7 @@
   <li><a href="#device-naming">Device naming</a></li>
   <li><a href="#safety">Safety</a></li>
   <li><a href="#wiring">Wiring</a></li>
+  <li><a href="#status-indicator-lights">Status indicator lights</a></li>
   <li><a href="#bill-of-materials">Bill of materials</a></li>
   <li><a href="#enclosure-and-assembly">Enclosure and assembly</a></li>
   <li><a href="#build-with-platformio">Build with PlatformIO</a></li>
@@ -144,6 +145,22 @@
 </table>
 
 <p>The firmware assumes active-high pump-driver inputs: <code>HIGH</code> turns a pump on and <code>LOW</code> turns it off. The two status-light outputs are also active-high and use PWM for dimming/pulsing. Change <code>PUMP_ACTIVE_HIGH</code> or <code>STATUS_LED_ACTIVE_HIGH</code> in <a href="src/HydroDozerPump/main.cpp">src/HydroDozerPump/main.cpp</a> only if the installed wiring uses inverted logic. See <a href="docs/hardware-pinout.md">docs/hardware-pinout.md</a> for electrical notes and the recovery-jumper procedure.</p>
+
+<h2 id="status-indicator-lights">Status indicator lights</h2>
+
+<p>The green light is connected through the ULN2003 from <code>D6</code>; the red light is connected from <code>D7</code>. The local <code>readme.html</code> preview animates these states; the published README grid below is static.</p>
+
+<table>
+  <thead><tr><th>Green</th><th>Red</th><th>State and meaning</th></tr></thead>
+  <tbody>
+    <tr><td align="center">🟢<br>Solid</td><td align="center">⚫<br>Off</td><td><strong>Normal / idle:</strong> the controller is ready and no pump is currently running.</td></tr>
+    <tr><td align="center">🟢<br>Pulsing</td><td align="center">⚫<br>Off</td><td><strong>Pumping:</strong> the green indicator pulses while Pump A or Pump B is running.</td></tr>
+    <tr><td align="center">🟢<br>Solid or pulsing</td><td align="center">🔴<br>Solid</td><td><strong>Low bottle:</strong> red turns on when either bottle reaches the configured threshold. Green stays solid while idle and continues pulsing if a pump is running.</td></tr>
+    <tr><td align="center">🟢<br>Alternating</td><td align="center">🔴<br>Alternating</td><td><strong>Dosing halted:</strong> green and red alternate every 350 ms when the scheduler is paused or a bottle is empty. Refill the bottle and resume the scheduler before dosing.</td></tr>
+  </tbody>
+</table>
+
+<p><strong>Priority:</strong> the paused/empty alternating state overrides the normal, pumping, and low-bottle displays.</p>
 
 <h2 id="bill-of-materials">Bill of materials</h2>
 
