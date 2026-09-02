@@ -52,6 +52,10 @@
 
 <p>HydroDozerPump is a two-channel hydroponic dosing controller built around a Wemos D1 Mini (ESP8266). It drives Pump A and Pump B through an external driver, tracks the remaining volume in two nutrient bottles, and publishes its state and controls through MQTT discovery for Home Assistant.</p>
 
+<blockquote>
+  <p><strong>Beta / experimental hardware:</strong> this project is in beta and the current enclosure does not provide the wet/dry separation planned for a production design. It does not claim compliance with <a href="https://www.ul.com/services/environmental-rated-accessories-enclosures">ANSI/UL 50E</a>, <a href="https://www.nema.org/docs/default-source/standards-document-library/nema-250-2018-contents-and-scope.pdf?sfvrsn=96e44a99_1">NEMA 250</a>, <a href="https://webstore.iec.ch/en/publication/2448">IEC 60529</a>, or, where applicable, <a href="https://docinfofiles.nfpa.org/files/AboutTheCodes/70/70_A2022_NEC_P07_FD_PIReport_rev_1005.pdf">ANSI/NFPA 70 (NEC), Article 547</a>.</p>
+</blockquote>
+
 <p>The controller supports manual doses, per-pump calibration, three daily scheduler slots, bottle refill tracking, pump-run logging, browser-based configuration, and OTA firmware updates. It is intended for low-voltage dosing hardware only; select and wire the pump power supply and driver for the exact pumps in the installation.</p>
 
 <p><strong>Wi-Fi limitation:</strong> the ESP8266 supports 2.4 GHz 802.11 b/g/n Wi-Fi only. Use a compatible 2.4 GHz network for onboarding and normal operation.</p>
@@ -146,6 +150,25 @@
 <p>See <a href="docs/BOM.md">docs/BOM.md</a> for the electronics, pump-control hardware, wiring, and enclosure parts list.</p>
 
 <h2 id="enclosure-and-assembly">Enclosure and assembly</h2>
+
+<h3>First beta enclosure notice</h3>
+
+<p><strong>This is the first beta release of the mounting and enclosure design.</strong> It is a work in progress. In this revision, the pumps, tubing, and nutrient bottles (the wet side) share the same overall enclosure assembly as the controller, ULN2003 driver, and wiring (the electronics side). It does not provide a tested liquid-tight physical barrier between those areas.</p>
+
+<p>Do not describe this prototype as water-resistant, IP rated, NEMA rated, certified, or compliant with an electrical-enclosure standard. Do not use it unattended or where a leak, condensation, splash, or service activity could reach electronics. Disconnect power before filling bottles, changing tubing, or servicing a pump.</p>
+
+<p>The next enclosure revision is intended to separate the wet side from the electronics using a physical bulkhead and independently managed cable/tube pass-throughs. The finished design will need to be evaluated and tested against the environment and installation requirements that apply to its actual use.</p>
+
+<h3>Standards and design references</h3>
+
+<ul>
+  <li><a href="https://www.ul.com/services/environmental-rated-accessories-enclosures">ANSI/UL 50E</a>: environmental considerations for electrical equipment enclosures, including maintaining an environmental seal.</li>
+  <li><a href="https://www.nema.org/docs/default-source/standards-document-library/nema-250-2018-contents-and-scope.pdf?sfvrsn=96e44a99_1">NEMA 250</a>: enclosure types and environmental protection for electrical equipment up to 1000 V.</li>
+  <li><a href="https://webstore.iec.ch/en/publication/2448">IEC 60529</a>: IP Code classification for protection provided by electrical enclosures against ingress.</li>
+  <li><a href="https://docinfofiles.nfpa.org/files/AboutTheCodes/70/70_A2022_NEC_P07_FD_PIReport_rev_1005.pdf">ANSI/NFPA 70 (NEC), Article 547</a>: relevant where the installation is in an agricultural-building area subject to wet, damp, corrosive, or wash-down conditions.</li>
+</ul>
+
+<p>These references do not create a blanket rule that every hydroponic enclosure must use one particular barrier. They establish enclosure-performance and installation expectations; a physical wet/dry separation is the safety approach planned for the next revision. Consult the authority having jurisdiction and a qualified electrical professional for any permanent or mains-connected installation.</p>
 
 <p>The repository includes the current 3MF files:</p>
 
@@ -274,8 +297,10 @@ platformio.ini         PlatformIO project configuration</code></pre>
 
 <h2 id="license">License</h2>
 
-<p>A license has not yet been selected for this repository. Add a license before publishing a release so reuse terms are clear.</p>
+<p>This project is licensed under the <a href="LICENSE">MIT License</a>.</p>
 
 <h2 id="disclaimer">Disclaimer</h2>
 
 <p>This project controls pumps and chemical or nutrient dosing. Review, test, and validate the electrical design, calibration, dose limits, and fail-safe behavior before use.</p>
+
+<p>This project was created with the assistance of AI. Review all hardware, firmware, documentation, and safety decisions independently before use.</p>
