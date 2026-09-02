@@ -258,7 +258,7 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
 
 <h2 id="web-ui-reference">Web UI reference</h2>
 
-> Additional redacted screenshots for network settings, the pump log, and firmware updates will be added later.
+> The screenshots below use generic, public-safe example values. Do not publish a device backup or screenshot containing private credentials, hostnames, or network addresses.
 
 <p>The home page provides access to Pump Calibration, Setup, MQTT command sending, Pump Log, Firmware Upgrade, and reboot. The complete route map is maintained in <a href="docs/web-pages-index.md">docs/web-pages-index.md</a>.</p>
 
@@ -285,6 +285,26 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
 <table>
   <tr>
     <td align="center"><img src="docs/Backup_restore.jpg" alt="HydroDozerPump backup and restore page" width="70%"><br><em>Configuration and pump-log backup and restore</em></td>
+  </tr>
+</table>
+
+<h3>Pump log</h3>
+
+<p>The pump-log page summarizes the three scheduler slots and shows the newest pump-run entries first. Use <strong>Download Pump Log</strong> to save the CSV file, and <strong>Refresh</strong> to reload the current entries. The log uses the columns <code>Date</code>, <code>Pump ID</code>, <code>Volume in ML</code>, and <code>Note</code>.</p>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/Pump_log.jpg" alt="HydroDozerPump pump log page" width="70%"><br><em>Pump schedule summary and CSV pump-run log</em></td>
+  </tr>
+</table>
+
+<h3>Firmware upgrade</h3>
+
+<p>Select <strong>Firmware</strong> in the ElegantOTA page to upload the compiled firmware <code>.bin</code>. Select <strong>Filesystem</strong> only when uploading the LittleFS image; it replaces the Web UI and stored files, so back up <code>config.json</code> and <code>pump_runs.csv</code> first.</p>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/Firmware_upgrade.jpg" alt="ElegantOTA firmware and filesystem upload page" width="70%"><br><em>Firmware and LittleFS upload page</em></td>
   </tr>
 </table>
 
@@ -332,9 +352,13 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
   </tr>
 </table>
 
-<h3>Settings and recovery</h3>
+<h3>Network, MQTT, and recovery settings</h3>
 
 <table>
+  <tr>
+    <td align="center"><img src="docs/Networkiong.jpg" alt="HydroDozerPump network settings page" width="100%"><br><em>Network settings: DHCP, hostname, and optional static address</em></td>
+    <td align="center"><img src="docs/MQTT-Settings.jpg" alt="HydroDozerPump MQTT settings page" width="100%"><br><em>MQTT broker and client settings</em></td>
+  </tr>
   <tr>
     <td align="center"><img src="docs/Time-Sync.png" alt="HydroDozerPump time synchronization settings page" width="100%"><br><em>Time Synchronization: <code>/settings/time</code></em></td>
     <td align="center"><img src="docs/OTA-Settings.png" alt="HydroDozerPump OTA settings page" width="100%"><br><em>OTA Settings: <code>/settings/ota</code></em></td>

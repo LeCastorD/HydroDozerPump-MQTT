@@ -3,11 +3,6 @@
 # Local Safari preview generated from README.md.
 readme.html
 
-# Local source screenshots containing deployment-specific information.
-# The public-safe redacted versions use the -public suffix.
-docs/HA-DashBoard.jpg
-docs/MQTT-Page2.jpg
-
 .pio/
 .pioenvs/
 .piolibdeps/
