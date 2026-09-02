@@ -69,6 +69,12 @@
   </tr>
   <tr>
     <td valign="top">
+      <h3>1000 uF, 25 V electrolytic capacitor</h3>
+      <p><strong>Quantity:</strong> 1</p>
+      <p>Polarized bulk decoupling capacitor for the low-voltage supply rail. Observe polarity and do not exceed the 25 V rating.</p>
+      <p align="center"><img src="Capacitor.jpeg" alt="1000 microfarad 25 volt electrolytic capacitor" width="180"></p>
+    </td>
+    <td valign="top">
       <h3>12 V pump power supply</h3>
       <p><strong>Quantity:</strong> 1</p>
       <p><strong>Model:</strong> <em>TBD</em></p>
@@ -81,10 +87,13 @@
       <p>Connects D5 to GND during boot for recovery. Hold for at least three seconds to trigger the factory reset.</p>
       <p><em>Reference image placeholder.</em></p>
     </td>
-    <td valign="top">
+  </tr>
+  <tr>
+    <td valign="top" colspan="3">
       <h3>Printable enclosure parts</h3>
       <p><strong>Quantity:</strong> 1 set</p>
       <p>Print the enclosure box, populated logic mounting plate, and pump mounting plate. Confirm the fit against the selected components before final assembly.</p>
+      <p align="center"><img src="Enclosure_box.jpg" alt="HydroDozerPump printed enclosure box and lid preview" width="180"><br><em>Enclosure box and lid</em></p>
       <p align="center"><img src="Mounting_Logic_plate.jpeg" alt="HydroDozerPump logic mounting plate" width="180"><br><em>Logic mounting plate</em></p>
       <p align="center"><img src="Mounting_Pump_Plate.jpeg" alt="HydroDozerPump pump mounting plate" width="180"><br><em>Pump mounting plate</em></p>
       <p><a href="../Enclosure%20and%20mount/Enclosure_Box.3mf">Enclosure_Box.3mf</a><br><a href="../Enclosure%20and%20mount/Mounting_Logic_plate.3mf">Mounting_Logic_plate.3mf</a><br><a href="../Enclosure%20and%20mount/Mounting_Pump_Plate.3mf">Mounting_Pump_Plate.3mf</a></p>
