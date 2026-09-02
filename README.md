@@ -258,9 +258,23 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
 
 <h2 id="web-ui-reference">Web UI reference</h2>
 
-> Screenshot placeholders: add redacted HydroDozerPump screenshots for the home page, calibration, network, MQTT, backup and restore, and pump log pages.
+> Additional redacted screenshots for the home page, calibration, network, backup and restore, and pump log pages will be added later.
 
 <p>The home page provides access to Pump Calibration, Setup, MQTT command sending, Pump Log, Firmware Upgrade, and reboot. The complete route map is maintained in <a href="docs/web-pages-index.md">docs/web-pages-index.md</a>.</p>
+
+<h3>MQTT discovery and Home Assistant</h3>
+
+<p>With MQTT discovery enabled, Home Assistant automatically exposes HydroDozerPump controls, bottle information, configuration, and diagnostics. The detailed views below use public-safe example network values.</p>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/MQTT-Page1.jpg" alt="Home Assistant MQTT discovery controls for HydroDozerPump" width="100%"><br><em>Home Assistant MQTT discovery: controls</em></td>
+    <td align="center"><img src="docs/MQTT-Page2-public.png" alt="Redacted Home Assistant MQTT discovery details for HydroDozerPump" width="100%"><br><em>Home Assistant MQTT discovery: configuration and diagnostics</em></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><img src="docs/HA-Dashboard-public.png" alt="Redacted example Home Assistant dashboard for HydroDozerPump" width="100%"><br><em>Example HydroDozerPump Home Assistant dashboard</em></td>
+  </tr>
+</table>
 
 <h3>Settings and recovery</h3>
 
