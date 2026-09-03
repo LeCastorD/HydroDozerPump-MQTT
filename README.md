@@ -135,10 +135,10 @@
 <table>
   <thead><tr><th>Controller pin</th><th>Connection</th></tr></thead>
   <tbody>
-    <tr><td><code>D1</code> / <code>GPIO5</code></td><td>Pump A driver input</td></tr>
-    <tr><td><code>D2</code> / <code>GPIO4</code></td><td>Pump B driver input</td></tr>
-    <tr><td><code>D6</code> / <code>GPIO12</code></td><td>ULN2003 input for the green status light; active-high PWM output</td></tr>
-    <tr><td><code>D7</code> / <code>GPIO13</code></td><td>ULN2003 input for the red status light; active-high PWM output</td></tr>
+    <tr><td><code>D1</code> / <code>GPIO5</code></td><td>INT1 (<em>ULN2003</em>)</td></tr>
+    <tr><td><code>D2</code> / <code>GPIO4</code></td><td>INT2 (<em>ULN2003</em>)</td></tr>
+    <tr><td><code>D6</code> / <code>GPIO12</code></td><td>INT3 (<em>ULN2003</em>)</td></tr>
+    <tr><td><code>D7</code> / <code>GPIO13</code></td><td>INT1 (<em>ULN2003</em>)</td></tr>
     <tr><td><code>D5</code> / <code>GPIO14</code></td><td>Factory-reset jumper input; short to <code>GND</code> during boot for at least three seconds</td></tr>
     <tr><td><code>GND</code></td><td>Common ground between the ESP8266, ULN2003 board, pumps, status lights, and power supply</td></tr>
   </tbody>
