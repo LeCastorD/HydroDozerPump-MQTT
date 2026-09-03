@@ -400,9 +400,40 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
 
 <h2 id="home-assistant-interface">Home Assistant interface</h2>
 
-<p>When MQTT is connected, HydroDozerPump publishes Home Assistant MQTT discovery messages for dosing controls, bottle capacity and reserve values, scheduler controls, alarms, network diagnostics, and pump controls. Home Assistant can issue safe dosing and configuration commands through the discovered entities. Use the documented topic contract when integrating with automations outside Home Assistant. A generic dashboard template is available in <a href="HA/README.md">HA/README.md</a>.</p>
+<p>When MQTT is connected, HydroDozerPump publishes Home Assistant MQTT discovery messages for dosing controls, bottle capacity and reserve values, scheduler controls, alarms, network diagnostics, and pump controls. Home Assistant can issue safe dosing and configuration commands through the discovered entities. Use the documented topic contract when integrating with automations outside Home Assistant.</p>
 
-> Home Assistant placeholder: add a redacted device-page screenshot and dashboard example here.
+<h3 id="home-assistant-dashboard">Dashboard template</h3>
+
+<p>The <a href="HA/hydrodozerpump-dashboard.yaml">hydrodozerpump-dashboard.yaml</a> template provides pump controls, scheduler settings, doses, bottle information, and diagnostics for one device.</p>
+
+<ol>
+  <li>Confirm MQTT discovery has created the HydroDozerPump device and its entities.</li>
+  <li>Copy <code>HA/hydrodozerpump-dashboard.yaml</code> to the Home Assistant configuration directory, then register it as a YAML dashboard in <code>configuration.yaml</code>:</li>
+</ol>
+
+<pre><code>lovelace:
+  dashboards:
+    hydrodozerpump-dashboard:
+      mode: yaml
+      filename: hydrodozerpump-dashboard.yaml
+      title: HydroDozerPump
+      icon: mdi:pump
+      show_in_sidebar: true</code></pre>
+
+<ol start="3">
+  <li>Restart Home Assistant, open the new dashboard, and confirm that every card resolves to an entity.</li>
+</ol>
+
+<p><strong>Remap the template before use:</strong> it intentionally uses the placeholder <code>hydrodozerpump_example</code>. In <strong>Settings &gt; Devices &amp; services &gt; Entities</strong>, copy the real IDs created by discovery. A device named <code>hydrodozerpump-ab12</code> may use <code>hydrodozerpump_ab12</code>, but do not assume this: Home Assistant can add a suffix when an ID already exists.</p>
+
+<ul>
+  <li>Replace every <code>hydrodozerpump_example</code> occurrence with the confirmed prefix, including both <code>entity:</code> and button <code>target.entity_id</code> values.</li>
+  <li>Correct any remaining individual entity IDs from the Entities page; the template's names are examples and may not match your discovered names.</li>
+  <li>Replace <code>http://hydrodozerpump-example.local</code> with the controller's actual hostname if you want the dashboard link to work.</li>
+  <li>You may freely change card <code>name:</code> values; they are labels only and do not change the entity mapping.</li>
+</ul>
+
+<p>See the <a href="https://www.home-assistant.io/dashboards/dashboards/">Home Assistant YAML dashboard documentation</a> for alternative dashboard registration options.</p>
 
 <h2 id="security">Security</h2>
 
