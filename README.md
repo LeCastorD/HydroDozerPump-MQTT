@@ -148,7 +148,7 @@
 
 <h2 id="status-indicator-lights">Status indicator lights</h2>
 
-<p>The green light is connected through the ULN2003 from <code>D6</code>; the red light is connected from <code>D7</code>. The local <code>readme.html</code> preview animates these states; the published README grid below is static.</p>
+<p>The green light is connected through the ULN2003 from <code>D6</code>; the red light is connected from <code>D7</code>.</p>
 
 <table>
   <thead><tr><th>Green</th><th>Red</th><th>State and meaning</th></tr></thead>
