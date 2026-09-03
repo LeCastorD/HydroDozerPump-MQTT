@@ -130,7 +130,7 @@
 
 <h2 id="wiring">Wiring</h2>
 
-> Technical drawing placeholder: add the validated ULN2003, pump, status-light, power-distribution, and controller wiring drawing here.
+<p align="center"><img src="docs/Technical_Drawing.jpeg" alt="HydroDozerPump technical wiring drawing" width="100%"><br><em>HydroDozerPump technical wiring reference</em></p>
 
 <table>
   <thead><tr><th>Controller pin</th><th>Connection</th></tr></thead>
