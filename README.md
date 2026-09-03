@@ -25,6 +25,7 @@
 
 <ul>
   <li><a href="#overview">Overview</a></li>
+  <li><a href="#typical-usage">Typical usage</a></li>
   <li><a href="#features">Features</a></li>
   <li><a href="#hardware">Hardware</a></li>
   <li><a href="#component-reference">Component reference</a></li>
@@ -60,6 +61,16 @@
 <p>The controller supports manual doses, per-pump calibration, three daily scheduler slots, bottle refill tracking, pump-run logging, browser-based configuration, and OTA firmware updates. It is intended for low-voltage dosing hardware only; select and wire the pump power supply and driver for the exact pumps in the installation.</p>
 
 <p><strong>Wi-Fi limitation:</strong> the ESP8266 supports 2.4 GHz 802.11 b/g/n Wi-Fi only. Use a compatible 2.4 GHz network for onboarding and normal operation.</p>
+
+<h2 id="typical-usage">Typical usage</h2>
+
+<ol>
+  <li>Connect the controller to Wi-Fi, configure MQTT, and confirm that the MQTT Settings page reports a connection and Home Assistant discovers the device.</li>
+  <li>Route each pump outlet to a safe test container, verify the flow direction, then calibrate Pump A and Pump B using the measured volume.</li>
+  <li>Measure each nutrient container's usable volume and enter the capacity for the matching bottle in Home Assistant.</li>
+  <li>Set the total daily dose and the Pump A/Pump B ratio, then schedule the three dosing times for the required photoperiod.</li>
+  <li>Confirm the first doses and bottle-volume tracking, then refill and reset bottle volumes as needed.</li>
+</ol>
 
 <h2 id="features">Features</h2>
 
